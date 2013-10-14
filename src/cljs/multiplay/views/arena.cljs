@@ -19,7 +19,8 @@
   (doseq [{id :id name :name [x y] :position :as player} players]
     (log ["draw-player" player])
     (doto context
-      (.fillText (str "Player " id " : " name) x y))))
+      (.fillText (str "Player " id " : " name) x y)
+      (.fillRect x y 10 10))))
 
 (defn update-view
   [canvas game-state]
