@@ -3,7 +3,7 @@
 
 (defn- initial-player-state
   [id name]
-  { :position [(+ 30 (rand-int params/game-width)) (+ 30 (rand-int params/game-height))]
+  { :position [(+ 30 (rand-int (/ params/game-width 10))) (+ 30 (rand-int (/ params/game-height 10)))]
     :id id
     :name name
     :score 0})

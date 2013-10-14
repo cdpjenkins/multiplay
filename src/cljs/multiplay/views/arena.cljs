@@ -18,17 +18,21 @@
   (set! (.-fillStyle context) "#000")
   (doseq [{id :id name :name [x y] :position :as player} players]
     (log ["draw-player" player])
-    (doto context
-      (.fillText (str "Player " id " : " name) x y)
-      (.fillRect x y 10 10))))
+    (let [px (* x 10)
+          py (* y 10)]
+      (doto context
+        (.fillText (str "Player " id " : " name) px py)
+        (.fillRect px py 10 10)))))
 
 (defn update-view
   [canvas game-state]
   (let [context (.getContext canvas "2d")
         w (.-width canvas)
         h (.-height canvas)]
+    (set! (.-fillStyle context) "white")
     (doto context
       (.clearRect 0 0 w h)
+      (.fillRect 0 0 w h)
       (draw-players game-state))))
 
 (defn create!
