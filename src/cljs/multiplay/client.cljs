@@ -84,7 +84,7 @@
   (go (while true
         ; block for input on either websocket or command channel
         (let [[event channel] (alts! [ws-receive command-chan])]
-          (log ["event received" event])
+;          (log ["event received" event])
           (condp = channel
             ws-receive (receive-websocket event render-channel)
             command-chan (>! ws-send event)

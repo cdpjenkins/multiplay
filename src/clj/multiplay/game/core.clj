@@ -5,28 +5,30 @@
   [id name]
   (let [pos [(+ 30 (rand-int (/ params/game-width 10))) (+ 30 (rand-int (/ params/game-height 10)))]]
       { :position pos
-       :trail '(pos)
+       :trail (list pos)
        :id id
        :name name
        :score 0}))
 
-
 (defn move-up
   [{[x y] :position sx :trail :as player}]
   (let [pos [x (dec y)]]
-    (assoc (assoc player :position pos) :trail (cons pos sx))))
+    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
 
 (defn move-down 
   [{[x y] :position sx :trail :as player}]
-    (assoc player :position [x (inc y)]))
+  (let [pos [x (inc y)]]
+    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
 
 (defn move-left
   [{[x y] :position sx :trail :as player}]
-    (assoc player :position [(dec x) y]))
+  (let [pos [(dec x) y]]
+    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
 
 (defn move-right 
   [{[x y] :position sx :trail :as player}]
-  (assoc player :position [(inc x) y]))
+  (let [pos [(inc  x) y]]
+    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
 
 (defn update-player [player-to-update action {:keys [players]}]
   (map 

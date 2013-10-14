@@ -16,13 +16,22 @@
   (set! (.-font context) "12px Arial")
   (set! (.-textAlign context) "start")
   (set! (.-fillStyle context) "#000")
-  (doseq [{id :id name :name [x y] :position :as player} players]
+  (doseq [{id :id name :name [x y] :position sx :trail :as player} players]
     (log ["draw-player" player])
     (let [px (* x 10)
           py (* y 10)]
+      
       (doto context
         (.fillText (str "Player " id " : " name) px py)
-        (.fillRect px py 10 10)))))
+;        (.fillText (str sx) px py)
+        (.fillRect px py 10 10))
+
+      (.log js/console (str "sx is: " sx))
+      (doseq [[tx ty] sx]
+        (.fillRect context (* tx 10) (* ty 10) 10 10))
+
+
+)))
 
 (defn update-view
   [canvas game-state]
