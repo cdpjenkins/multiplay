@@ -3,33 +3,38 @@
 
 (defn- initial-player-state
   [id name]
-  { :position [(+ 30 (rand-int (/ params/game-width 10))) (+ 30 (rand-int (/ params/game-height 10)))]
-    :id id
-    :name name
-    :score 0})
+  (let [pos [(+ 30 (rand-int (/ params/game-width 10))) (+ 30 (rand-int (/ params/game-height 10)))]]
+      { :position pos
+       :trail '(pos)
+       :id id
+       :name name
+       :score 0}))
 
 
 (defn move-up
-  [{[x y] :position :as player}]
-    (assoc player :position [x (dec y)]))
+  [{[x y] :position sx :trail :as player}]
+  (let [pos [x (dec y)]]
+    (assoc (assoc player :position pos) :trail (cons pos sx))))
 
 (defn move-down 
-  [{[x y] :position :as player}]
+  [{[x y] :position sx :trail :as player}]
     (assoc player :position [x (inc y)]))
 
 (defn move-left
-  [{[x y] :position :as player}]
+  [{[x y] :position sx :trail :as player}]
     (assoc player :position [(dec x) y]))
 
 (defn move-right 
-  [{[x y] :position :as player}]
+  [{[x y] :position sx :trail :as player}]
   (assoc player :position [(inc x) y]))
 
 (defn update-player [player-to-update action {:keys [players]}]
-  (map (fn [{:keys [id] :as player}]
-    (if (= id player-to-update)
-      (action player)
-      player)) players))
+  (map 
+   (fn [{:keys [id] :as player}]
+     (if (= id player-to-update)
+       (action player)
+       player)) 
+   players))
 
 (def initial-game-state
   {:players []})
