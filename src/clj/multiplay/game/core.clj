@@ -17,6 +17,14 @@
   [{[x y] :position :as player}]
     (assoc player :position [x (inc y)]))
 
+(defn move-left
+  [{[x y] :position :as player}]
+    (assoc player :position [(dec x) y]))
+
+(defn move-right 
+  [{[x y] :position :as player}]
+  (assoc player :position [(inc x) y]))
+
 (defn update-player [player-to-update action {:keys [players]}]
   (map (fn [{:keys [id] :as player}]
     (if (= id player-to-update)
@@ -52,6 +60,16 @@
 (defmethod handle-command :player/down
   [game-state [command id]]
   (assoc game-state :players (update-player id move-down game-state)))
+
+(defmethod handle-command :player/left
+  [game-state [command id]]
+  (assoc game-state :players (update-player id move-left game-state)))
+
+(defmethod handle-command :player/right
+  [game-state [command id]]
+  (assoc game-state :players (update-player id move-right game-state)))
+
+
 
 (defn- handle-commands
   [game-state commands]

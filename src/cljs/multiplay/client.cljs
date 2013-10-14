@@ -25,6 +25,10 @@
       40 :down
       87 :up
       83 :down
+
+      37 :left      ; left arrow
+      39 :right     ; right arrow
+
       nil)))
 
 (defn bind-key-observer
@@ -34,6 +38,8 @@
         (case @key-down
           :up   (>! command-chan [:player/up])
           :down (>! command-chan [:player/down])
+          :left   (>! command-chan [:player/left])
+          :right   (>! command-chan [:player/right])
           :not-matched)))
   (.addEventListener js/window "keydown"
                      (fn [e]
