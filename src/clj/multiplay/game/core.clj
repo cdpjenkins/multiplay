@@ -12,25 +12,17 @@
      :name name
      :score 0}))
 
-(defn move-up
-  [{[x y] :position sx :trail :as player}]
-  (let [pos [x (dec y)]]
-    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
+(defn move-up [player]
+  (assoc player :direction :up))
 
-(defn move-down 
-  [{[x y] :position sx :trail :as player}]
-  (let [pos [x (inc y)]]
-    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
+(defn move-down [player]
+  (assoc player :direction :down))
 
-(defn move-left
-  [{[x y] :position sx :trail :as player}]
-  (let [pos [(dec x) y]]
-    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
+(defn move-left [player]
+  (assoc player :direction :left))
 
-(defn move-right 
-  [{[x y] :position sx :trail :as player}]
-  (let [pos [(inc  x) y]]
-    (assoc (assoc player :position pos) :trail (take 15 (cons pos sx)))))
+(defn move-right [player]
+  (assoc player :direction :right))
 
 (defn update-player [player-to-update action {:keys [players]}]
   (map 
@@ -40,9 +32,23 @@
        player)) 
    players))
 
-(defn update-positions  [game-state]
-  ;; TODO
-  game-state)
+(defn update-player-position [{[x y] :position
+                               dir :direction
+                               trail :trail
+                               :as player}]
+  (let [trail (cons [x y] trail)
+        [x y] (case dir
+                :left  [(dec x) y]
+                :right [(inc x) y]
+                :up    [x (dec y)]
+                :down  [x (inc y)])]
+    (assoc player :position [x y] :trail trail)))
+
+(defn update-player-positions [game-state]
+  (println "in update-player-positions")
+  (println (:players game-state))
+  (assoc game-state :players
+         (doall (map update-player-position (:players game-state)))))
 
 (def initial-game-state
   {:players []})
@@ -98,5 +104,5 @@
   [game-state commands]
   (let [new-game-state (-> game-state
                            (handle-commands commands)
-                           (update-positions))]
+                           (update-player-positions))]
     new-game-state))

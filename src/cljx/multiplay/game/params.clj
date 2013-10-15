@@ -9,7 +9,7 @@
 (def game-width  (/ canvas-width cell-width))
 (def game-height (/ canvas-height cell-height))
 
-(def ticks-per-sec 1)
+(def ticks-per-sec 10)
 (def tick-ms (/ 1000 ticks-per-sec))
 
 ;; Put your shared game parameters here!!
