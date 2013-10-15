@@ -5,11 +5,12 @@
   [id name]
   (let [pos [(+ 30 (rand-int (/ params/game-width params/cell-width)))
              (+ 30 (rand-int (/ params/game-height params/cell-height)))]]
-      { :position pos
-       :trail (list pos)
-       :id id
-       :name name
-       :score 0}))
+    {:position pos
+     :direction :up
+     :trail (list pos)
+     :id id
+     :name name
+     :score 0}))
 
 (defn move-up
   [{[x y] :position sx :trail :as player}]
@@ -38,6 +39,10 @@
        (action player)
        player)) 
    players))
+
+(defn update-positions  [game-state]
+  ;; TODO
+  game-state)
 
 (def initial-game-state
   {:players []})
@@ -92,5 +97,6 @@
   tick"
   [game-state commands]
   (let [new-game-state (-> game-state
-                           (handle-commands commands))]
+                           (handle-commands commands)
+                           (update-positions))]
     new-game-state))

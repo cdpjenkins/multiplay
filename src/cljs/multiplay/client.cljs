@@ -5,6 +5,7 @@
             [multiplay.utils :refer [log host]]
             [multiplay.async.websocket :as websocket]
             [multiplay.views.arena]
+            [multiplay.game.params :as params]
             [goog.events]
             [goog.dom]))
 
@@ -34,7 +35,8 @@
 (defn bind-key-observer
   [command-chan]
   (go (while true
-        (<! (timeout 50))
+        (<! (timeout params/tick-ms))
+        (log params/tick-ms)
         (case @key-down
           :up   (>! command-chan [:player/up])
           :down (>! command-chan [:player/down])
@@ -55,8 +57,10 @@
 
 (defn bind-arrow-click
   [command-chan]
+
   (go (while true
-        (<! (timeout 50))
+        (<! (timeout params/tick-ms))
+        (log params/tick-ms)
         (case @clicked
           :up   (>! command-chan [:player/up])
           :down (>! command-chan [:player/down])
