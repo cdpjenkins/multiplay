@@ -3,7 +3,7 @@
   (:require [cljs.core.async
              :refer [chan sliding-buffer alts! >! <! timeout close!]]
             [multiplay.utils :refer [log]]
-            [multiplay.game.params :as game-params]
+            [multiplay.game.params :as params]
             [goog.events]
             [goog.dom]))
 
@@ -18,20 +18,19 @@
   (set! (.-fillStyle context) "#000")
   (doseq [{id :id name :name [x y] :position sx :trail :as player} players]
     (log ["draw-player" player])
-    (let [px (* x 10)
-          py (* y 10)]
+    (let [px (* x params/cell-width)
+          py (* y params/cell-height)]
       
-      (doto context
-        (.fillText (str "Player " id " : " name) px py)
-;        (.fillText (str sx) px py)
-        (.fillRect px py 10 10))
+      (log (str "Player " id " : " name " [" px " " py "]"  ) )
+      (.fillText context (str "Player " id " : " name) px py)
+      (.fillRect context (+ 50 px) (+ 50 py) cell-width cell-height)
+
+
 
       (.log js/console (str "sx is: " sx))
       (doseq [[tx ty] sx]
-        (.fillRect context (* tx 10) (* ty 10) 10 10))
-
-
-)))
+        (.fillRect context (* tx params/cell-width) (* ty params/cell-height)
+                   params/cell-width params/cell-height)))))
 
 (defn update-view
   [canvas game-state]

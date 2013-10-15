@@ -3,7 +3,8 @@
 
 (defn- initial-player-state
   [id name]
-  (let [pos [(+ 30 (rand-int (/ params/game-width 10))) (+ 30 (rand-int (/ params/game-height 10)))]]
+  (let [pos [(+ 30 (rand-int (/ params/game-width params/cell-width)))
+             (+ 30 (rand-int (/ params/game-height params/cell-height)))]]
       { :position pos
        :trail (list pos)
        :id id
